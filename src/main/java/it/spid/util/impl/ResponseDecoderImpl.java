@@ -241,7 +241,7 @@ public class ResponseDecoderImpl implements ResponseDecoder {
      * */
 
     private String getEntityId(Response response) {
-        String entityid = response.getIssuer().getNameQualifier();
+        String entityid = response.getIssuer().getValue();
         return entityid;
     }
 

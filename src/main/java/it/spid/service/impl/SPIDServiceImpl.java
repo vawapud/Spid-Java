@@ -2,17 +2,19 @@ package it.spid.service.impl;
 
 import it.spid.Metadata.ServiceProviderMetadataCreator;
 import it.spid.exception.SpidServiceException;
-import it.spid.model.AuthRequest;
-import it.spid.model.IdpEntry;
-import it.spid.model.ResponseDecoded;
+import it.spid.model.*;
 import it.spid.service.SPIDService;
 import it.spid.util.AuthnFactory;
 import it.spid.util.AuthnFactoryImpl;
+import it.spid.util.LogoutFactory;
 import it.spid.util.ResponseDecoder;
+import it.spid.util.impl.LogoutDecoderImpl;
+import it.spid.util.impl.LogoutFactoryImpl;
 import it.spid.util.impl.ResponseDecoderImpl;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.xml.sax.SAXException;
 
@@ -117,4 +119,42 @@ public class SPIDServiceImpl implements SPIDService {
 
     }
 
+    @Override
+    public LogoutRequestDecoded processLogoutResponse(String samlLogoutResponse) {
+        LogoutDecoderImpl logDec = new LogoutDecoderImpl(samlLogoutResponse);
+        LogoutRequestDecoded logoutDecode = null;
+
+        try {
+            logoutDecode = logDec.processLogoutResponse();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (UnmarshallingException e) {
+            e.printStackTrace();
+        } catch (SpidServiceException e) {
+            e.printStackTrace();
+        }
+
+
+        return logoutDecode;
+    }
+
+    @Override
+    public LogoutRequested buildLogoutRequest(String entityId, String sessionIndex) {
+        LogoutFactory logoutFactory = new LogoutFactoryImpl(entityId, sessionIndex);
+
+        LogoutRequested logout = null;
+
+        try {
+            logout = logoutFactory.getSingleLogoutRequest();
+        } catch (MarshallingException e) {
+            e.printStackTrace();
+        }
+
+
+        return logout;
+    }
 }

@@ -94,8 +94,6 @@ public class ServiceProviderMetadataCreator {
     * Recupera tutto l'oggetto entityDescriptor saml, lo marshalla in stringa e lo esporto come file (da rivedere per integrare come endpoint) */
 
     public void build() {
-
-        EntityDescriptor descriptor = buildEntityDescriptor();
         String spMetadataXml = getXmlMetadata();
         try {
             stringToXML(spMetadataXml);
@@ -108,8 +106,6 @@ public class ServiceProviderMetadataCreator {
         } catch (TransformerException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void stringToXML(String xmlSource) throws ParserConfigurationException, IOException, SAXException, TransformerException {

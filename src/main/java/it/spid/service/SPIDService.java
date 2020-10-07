@@ -1,8 +1,6 @@
 package it.spid.service;
 
-import it.spid.model.AuthRequest;
-import it.spid.model.IdpEntry;
-import it.spid.model.ResponseDecoded;
+import it.spid.model.*;
 
 import java.util.List;
 
@@ -20,4 +18,7 @@ public interface SPIDService {
 
      void buildSPMetadata(String entityId, String logoutURI, String assertionConsumerServiceUrl, String serviceName, String serviceDesc, String organizationName, String organizationDisplayName, String organizationURL,  String certificate, List<String> attributes);
 
+     LogoutRequestDecoded processLogoutResponse(String samlLogoutResponse);
+
+     LogoutRequested buildLogoutRequest(String entityId, String sessionIndex);
 }
